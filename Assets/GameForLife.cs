@@ -29,17 +29,18 @@ public class GameForLife : MonoBehaviour
 
             for (int y = 0; y < numberOfRows; y++)
             {
-                Vector2 position = new Vector2(x, y);
-                GameObject newCell = Instantiate(cell, position, Quaternion.identity);
+
+                Vector2 newPos = new Vector2(x * cellSize - Camera.main.orthographicSize * Camera.main.aspect, y
+                    * cellSize - Camera.main.orthographicSize);
+
+                
+                GameObject newCell = Instantiate(cell, newPos, Quaternion.identity);
                 newCell.transform.localScale = Vector2.one * cellSize;
                 cells[x, y] = newCell.GetComponent<Cell>();
 
                 if (Random.Range(0, 100) < alivePercentege)
                 {
                     cells[x, y].alive = true;
-
-                    
-
                 }
 
                 cells[x, y].UpdateStatus();
@@ -57,8 +58,8 @@ public class GameForLife : MonoBehaviour
             for (int x = 1; x < numberOfColums; x++)
             {
                 neighbor = 0;
-
-                if(x + 1 < numberOfColums && x - 1 >= 0 && y + 1 < numberOfRows && y - 1 >= 0)
+                cells[x, y].transform.localScale = Vector2.one * cellSize;
+                if (x + 1 < numberOfColums && x - 1 >= 0 && y + 1 < numberOfRows && y - 1 >= 0)
 
                 {
                     if (cells[x + 1, y].alive)
@@ -87,7 +88,13 @@ public class GameForLife : MonoBehaviour
                         cells[x, y].alive = false;
                     }
 
-                    if(neighbor > 2)
+                    if (cells[x, y].alive == false && neighbor == 3)
+                    {
+
+                        cells[x, y].alive = true;
+                    }
+
+                    if (neighbor == 2 || neighbor == 3)
                     {
                         cells[x, y].alive = true;
                     }
@@ -96,11 +103,7 @@ public class GameForLife : MonoBehaviour
                     {
                         cells[x, y].alive = false;
                     }
-                    if (neighbor == 3)
-                    {
-                        cells[x, y].alive = true;
-                        Instantiate(cell, cells[x, y].transform.position, Quaternion.identity);
-                    }
+                    
 
                     cells[x, y].UpdateStatus();
             }

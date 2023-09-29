@@ -24,8 +24,7 @@ public class GameOfLife : MonoBehaviour
 
         cells = new Cell[numberOfColums, numberOfRows];
 
-        Debug.Log("number colums " + numberOfColums);
-        Debug.Log("number Rows " + numberOfColums);
+   
 
 
         for (int y = 0; y < numberOfRows; y++)
