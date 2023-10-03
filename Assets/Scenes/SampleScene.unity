@@ -154,6 +154,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cellSize: 0.1
   cell: {fileID: 6159445315941381629, guid: f8c5a7397362cc54cabb185b80f1ff68, type: 3}
+  countDown: 3
+  speed: 4
 --- !u!4 &130031726
 Transform:
   m_ObjectHideFlags: 0
@@ -206,7 +208,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0

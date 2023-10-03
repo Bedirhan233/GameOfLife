@@ -13,19 +13,81 @@ public class GameForLife : MonoBehaviour
     Cell[,] cells;
     public GameObject cell;
 
+    float timer;
+    public float countDown = 3;
+
+    public int speed = 4;
+
     bool shouldLive = true;
 
     int neighbor;
     // Start is called before the first frame update
     void Start()
     {
+
+        timer = countDown;
+        
+        QualitySettings.vSyncCount = 0;
+        
+
+        
+
+        CreateRows();
+
+    }
+
+    
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+
+        Application.targetFrameRate = speed;
+
+        if( shouldLive == false) 
+        {
+            
+        }
+
+
+        for (int y = 0; y < numberOfRows; y++)
+        {
+
+            for (int x = 0; x < numberOfColums; x++)
+            {
+
+                
+
+                neighbor = 0;
+                cells[x, y].transform.localScale = Vector2.one * cellSize;
+                if (x + 1 < numberOfColums && x - 1 >= 0 && y + 1 < numberOfRows && y - 1 >= 0)
+
+                {
+
+                    CalculateNeighbor(y, x);
+                    SetRules(y, x);
+
+                    
+                }
+            }
+        }
+
+        ExecuteRules();
+    }
+
+    
+
+
+    private void CreateRows()
+    {
+
         numberOfColums = (int)Mathf.Floor((Camera.main.orthographicSize * Camera.main.aspect * 2) / cellSize);
         numberOfRows = (int)Mathf.Floor(Camera.main.orthographicSize * 2 / cellSize);
-        QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 4;
 
-        cells = new Cell[numberOfColums, numberOfRows];  
-        
+        cells = new Cell[numberOfColums, numberOfRows];
+
+
         for (int x = 0; x < numberOfColums; x++)
         {
 
@@ -35,7 +97,7 @@ public class GameForLife : MonoBehaviour
                 Vector2 newPos = new Vector2(x * cellSize - Camera.main.orthographicSize * Camera.main.aspect, y
                     * cellSize - Camera.main.orthographicSize);
 
-                
+
                 GameObject newCell = Instantiate(cell, newPos, Quaternion.identity);
                 newCell.transform.localScale = Vector2.one * cellSize;
                 cells[x, y] = newCell.GetComponent<Cell>();
@@ -48,87 +110,97 @@ public class GameForLife : MonoBehaviour
                 cells[x, y].UpdateStatus();
             }
         }
+    }
+    private void CalculateNeighbor(int y, int x)
+    {
+        if (cells[x + 1, y].alive)
+        {
+            neighbor++;
+        }
+
+        if (cells[x - 1, y].alive)
+        {
+            neighbor++;
+        }
+
+        if (cells[x, y - 1].alive)
+        {
+            neighbor++;
+        }
+
+        if (cells[x, y + 1].alive)
+        {
+            neighbor++;
+        }
+
+        // diagonal
+
+        if (cells[x + 1, y - 1].alive)
+        {
+            neighbor++;
+        }
+
+        if (cells[x - 1, y - 1].alive)
+        {
+            neighbor++;
+        }
+
+        if (cells[x - 1, y + 1].alive)
+        {
+            neighbor++;
+        }
+
+        if (cells[x + 1, y + 1].alive)
+        {
+            neighbor++;
+        }
+
         
     }
 
-    // Update is called once per frame
-    void Update()
+    private void SetRules(int y, int x)
     {
-        for (int y = 0; y < numberOfRows; y++)
+        
+
+        if (neighbor < 2)
         {
+            cells[x, y].shouldLive = false;
 
-            for (int x = 0; x < numberOfColums; x++)
-            {
-                neighbor = 0;
-                cells[x, y].transform.localScale = Vector2.one * cellSize;
-                if (x + 1 < numberOfColums && x - 1 >= 0 && y + 1 < numberOfRows && y - 1 >= 0)
-
-                {
-                    if (cells[x + 1, y].alive)
-                    {
-                        neighbor++;
-                    }
-
-                    if (cells[x - 1, y].alive)
-                    {
-                        neighbor++;
-                    }
-
-                    if (cells[x, y - 1].alive)
-                    {
-                        neighbor++;
-                    }
-
-                    if (cells[x, y + 1].alive)
-                    {
-                        neighbor++;                      
-                    }
-
-                    // diagonal
-
-                    if (cells[x + 1, y - 1].alive)
-                    {
-                        neighbor++;
-                    }
-
-                    if (cells[x - 1, y - 1].alive)
-                    {
-                        neighbor++;
-                    }
-
-                    if (cells[x - 1, y + 1].alive)
-                    {
-                        neighbor++;
-                    }
-
-                    if (cells[x + 1, y + 1].alive)
-                    {
-                        neighbor++;
-                    }
-
-                    if (neighbor < 2)
-                    {
-                        cells[x, y].shouldLive = false;
-                    }
-
-                    if (neighbor == 3)
-                    {
-                        cells[x, y].shouldLive = true;
-                    }
-
-                    if (neighbor > 3)
-                    {
-                        cells[x, y].shouldLive = false;
-                    }
-                            
-
-                }
-
-              
-            }
 
         }
 
+        if (neighbor == 3)
+        {
+            cells[x, y].shouldLive = true;
+        }
+
+        if (neighbor > 3)
+        {
+            cells[x, y].shouldLive = false;
+        }
+
+        if (cells[x, y].shouldLive == false)
+        {
+
+            cells[x, y].SickCell();
+           
+        }
+
+       // cells[x, y].NewBornCell();
+
+
+
+
+
+
+
+
+
+
+    }
+
+    private void ExecuteRules()
+    {
         for (int y = 0; y < numberOfRows; y++)
         {
 
@@ -150,7 +222,11 @@ public class GameForLife : MonoBehaviour
                     }
 
 
-                    
+                    if (cells[x, y].alive == false)
+                    {
+
+                        
+                    }
 
                     cells[x, y].UpdateStatus();
 
