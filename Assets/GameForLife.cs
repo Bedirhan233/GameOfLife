@@ -8,10 +8,12 @@ public class GameForLife : MonoBehaviour
 {
 
     int numberOfColums, numberOfRows;
-    float cellSize = 0.25f;
-    float alivePercentege = 20;
+    public float cellSize = 0.25f;
+    float alivePercentege = 10;
     Cell[,] cells;
     public GameObject cell;
+
+    bool shouldLive = true;
 
     int neighbor;
     // Start is called before the first frame update
@@ -52,10 +54,10 @@ public class GameForLife : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        for (int y = 1; y < numberOfRows; y++)
+        for (int y = 0; y < numberOfRows; y++)
         {
 
-            for (int x = 1; x < numberOfColums; x++)
+            for (int x = 0; x < numberOfColums; x++)
             {
                 neighbor = 0;
                 cells[x, y].transform.localScale = Vector2.one * cellSize;
@@ -82,34 +84,80 @@ public class GameForLife : MonoBehaviour
                         neighbor++;                      
                     }
 
+                    // diagonal
+
+                    if (cells[x + 1, y - 1].alive)
+                    {
+                        neighbor++;
+                    }
+
+                    if (cells[x - 1, y - 1].alive)
+                    {
+                        neighbor++;
+                    }
+
+                    if (cells[x - 1, y + 1].alive)
+                    {
+                        neighbor++;
+                    }
+
+                    if (cells[x + 1, y + 1].alive)
+                    {
+                        neighbor++;
+                    }
 
                     if (neighbor < 2)
                     {
-                        cells[x, y].alive = false;
+                        cells[x, y].shouldLive = false;
                     }
 
-                    if (cells[x, y].alive == false && neighbor == 3)
+                    if (neighbor == 3)
                     {
-
-                        cells[x, y].alive = true;
-                    }
-
-                    if (neighbor == 2 || neighbor == 3)
-                    {
-                        cells[x, y].alive = true;
+                        cells[x, y].shouldLive = true;
                     }
 
                     if (neighbor > 3)
                     {
+                        cells[x, y].shouldLive = false;
+                    }
+                            
+
+                }
+
+              
+            }
+
+        }
+
+        for (int y = 0; y < numberOfRows; y++)
+        {
+
+            for (int x = 0; x < numberOfColums; x++)
+            {
+
+                if (x + 1 < numberOfColums && x - 1 >= 0 && y + 1 < numberOfRows && y - 1 >= 0)
+
+                {
+
+                    if (cells[x, y].shouldLive == true)
+                    {
+                        cells[x, y].alive = true;
+                    }
+
+                    if (cells[x, y].shouldLive == false)
+                    {
                         cells[x, y].alive = false;
                     }
+
+
                     
 
                     cells[x, y].UpdateStatus();
+
+                }
+
+
             }
-
-
         }
     }
-}
 }

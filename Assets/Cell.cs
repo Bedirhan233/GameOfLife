@@ -6,6 +6,8 @@ public class Cell : MonoBehaviour
 {
     public bool alive;
 
+    public bool shouldLive;
+
     SpriteRenderer spriteRenderer;
 
     public void UpdateStatus()
