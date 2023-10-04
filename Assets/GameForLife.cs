@@ -178,25 +178,6 @@ public class GameForLife : MonoBehaviour
         {
             cells[x, y].shouldLive = false;
         }
-
-        if (cells[x, y].shouldLive == false)
-        {
-
-            cells[x, y].SickCell();
-           
-        }
-
-       // cells[x, y].NewBornCell();
-
-
-
-
-
-
-
-
-
-
     }
 
     private void ExecuteRules()

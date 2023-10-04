@@ -7,38 +7,23 @@ public class Cell : MonoBehaviour
 
     public bool shouldLive;
 
-    Color color;
+    Color32 color;
 
-    float lifeColor = 1f;
+    float alivelifeColor = 1f;
 
     
 
-    SpriteRenderer spriteRenderer;
 
+    SpriteRenderer spriteRenderer;
 
     private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.color = new Color(lifeColor, lifeColor, lifeColor);
-
+        spriteRenderer.color = Color.black;
     }
 
     private void Update()
     {
-
-        
-
-
-        //if (alive)
-        //{
-        //    spriteRenderer.color = Color.white;   
-        //}
-        //if(!alive) 
-        //{
-        //    //SickCell();
-
-
-        //}
         
     }
 
@@ -46,21 +31,25 @@ public class Cell : MonoBehaviour
     {
         spriteRenderer ??= GetComponent<SpriteRenderer>();
         
-        spriteRenderer.enabled = alive;
-       
-        
-        
+        //spriteRenderer.enabled = alive;
 
-        
-
-
-
+        if(alive)
+        {
+            spriteRenderer.color = Color.white;
+            alivelifeColor = 1f;
+        }
+        else
+        {
+            spriteRenderer.color = color;
+            color = new Color(alivelifeColor, alivelifeColor, alivelifeColor);
+            alivelifeColor -= Time.deltaTime / 2;
+        }
     }
 
     public void SickCell()
     {
-        spriteRenderer.color = new Color(lifeColor, lifeColor, lifeColor);
-        lifeColor -= 0.2f;
+        spriteRenderer.color = new Color(alivelifeColor, alivelifeColor, alivelifeColor);
+        alivelifeColor -= 0.2f;
         //NewBornCell();
 
         //spriteRenderer.color = Color.red;
@@ -68,13 +57,6 @@ public class Cell : MonoBehaviour
 
     public void NewBornCell()
     {
-
-
-
-
         spriteRenderer.color = Color.white;
-
-
-
     }
 }
