@@ -11,6 +11,10 @@ public class Cell : MonoBehaviour
 
     float alivelifeColor = 1f;
 
+    public Color testcolor;
+
+
+
     
 
 
@@ -42,21 +46,10 @@ public class Cell : MonoBehaviour
         {
             spriteRenderer.color = color;
             color = new Color(alivelifeColor, alivelifeColor, alivelifeColor);
-            alivelifeColor -= Time.deltaTime / 2;
+            
+            alivelifeColor -= 0.5f;
         }
     }
 
-    public void SickCell()
-    {
-        spriteRenderer.color = new Color(alivelifeColor, alivelifeColor, alivelifeColor);
-        alivelifeColor -= 0.2f;
-        //NewBornCell();
-
-        //spriteRenderer.color = Color.red;
-    }
-
-    public void NewBornCell()
-    {
-        spriteRenderer.color = Color.white;
-    }
+   
 }

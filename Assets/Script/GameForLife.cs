@@ -7,77 +7,59 @@ using UnityEngine;
 public class GameForLife : MonoBehaviour
 {
 
-    int numberOfColums, numberOfRows;
-    public float cellSize = 0.25f;
-    float alivePercentege = 10;
     Cell[,] cells;
+    bool shouldLive = true;
+    float timer;
+    int numberOfColums, numberOfRows;
+    int neighbor;
+
+
     public GameObject cell;
 
-    float timer;
+    public float cellSize = 0.25f;
+    public float alivePercentege = 10;
     public float countDown = 3;
+    public bool isRuning = true;
+    
 
-    public int speed = 4;
 
-    bool shouldLive = true;
-
-    int neighbor;
     // Start is called before the first frame update
     void Start()
     {
-
         timer = countDown;
-        
         QualitySettings.vSyncCount = 0;
-        
-
-        
-
         CreateRows();
-
     }
-
-    
-
     // Update is called once per frame
     void Update()
     {
         
-
-        Application.targetFrameRate = speed;
-
-        if( shouldLive == false) 
+        
+        if(isRuning) 
         {
-            
+        RuningGameOfLife();
         }
+    }
 
+    private void RuningGameOfLife()
+    {
+        
 
         for (int y = 0; y < numberOfRows; y++)
         {
-
             for (int x = 0; x < numberOfColums; x++)
             {
-
-                
-
                 neighbor = 0;
                 cells[x, y].transform.localScale = Vector2.one * cellSize;
                 if (x + 1 < numberOfColums && x - 1 >= 0 && y + 1 < numberOfRows && y - 1 >= 0)
-
                 {
-
                     CalculateNeighbor(y, x);
                     SetRules(y, x);
-
-                    
                 }
             }
         }
-
         ExecuteRules();
     }
-
-    
-
 
     private void CreateRows()
     {
@@ -165,7 +147,6 @@ public class GameForLife : MonoBehaviour
         if (neighbor < 2)
         {
             cells[x, y].shouldLive = false;
-
 
         }
 

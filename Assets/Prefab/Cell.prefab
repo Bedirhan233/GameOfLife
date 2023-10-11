@@ -99,4 +99,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   alive: 0
   shouldLive: 0
-  color: {r: 1, g: 1, b: 1, a: 0}
+  testcolor: {r: 0.9433962, g: 0.5399311, b: 0.5399311, a: 0}
